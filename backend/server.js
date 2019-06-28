@@ -2,25 +2,23 @@ const Koa = require('koa');
 const logger = require('koa-morgan')
 const Router = require('koa-router')
 const bodyParser = require('koa-body')()
+const models = require('./models')
 
 const server = new Koa();
 const router = new Router()
 
-
-router.get('/session/', ctx => {
-    ctx.body = 'I am root!'
+router.post('/new/', bodyParser, async ctx => {
+    const Session = await models.Session.create({})
+    ctx.body = JSON.stringify(Session);
 });
 
-router.post('/update-session/', ctx => {
-    ctx.body = {
-      something: 'something here'
+router.post('/save', bodyParser, async ctx => {
+        const session = await models.Session.findOne({where: { id: ctx.request.body.id }})
+        session.clicks = ctx.request.body.clicks
+        session.save()
+        ctx.body = JSON.stringify(session);
     }
-})
-  
-router.get('/test', ctx => {
-    ctx.body = 'Test Route'
-})
-
+);
 
 server
 .use(logger('tiny'))
