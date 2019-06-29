@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "kaelmatthews",
-    "password": null,
+    "username": "clicktracker_user",
+    "password": "password",
     "database": "clicktracker",
-    "host": "127.0.0.1",
+    "host": "postgres",
     "dialect": "postgres",
     "operatorsAliases": false
   }

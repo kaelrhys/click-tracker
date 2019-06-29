@@ -1,0 +1,32 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:11-alpine
+    ports:
+      - 3432:5432
+    environment:
+      POSTGRES_USER: clicktracker_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clicktracker
+    container_name: clicktracker_postgres
+  client:
+    build: ./client
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    ports:
+      - 3000:3000
+    container_name: clicktracker_client
+    depends_on:
+      - server
+  server:
+    build: ./server
+    volumes:
+      - ./server:/server
+      - /server/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    container_name: clicktracker_server
+  

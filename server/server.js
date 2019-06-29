@@ -8,6 +8,8 @@ const cors = require('@koa/cors');
 const server = new Koa();
 const router = new Router()
 
+const PORT = 8080;
+
 var corsOptions = {
 	origin: '*'
 };
@@ -34,4 +36,6 @@ server
 .use(cors(corsOptions))
 .use(logger('tiny'))
 .use(router.routes())
-.listen(3001)
+.listen(PORT)
+
+console.log(`Running on ${PORT}`);

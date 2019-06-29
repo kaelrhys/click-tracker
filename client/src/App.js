@@ -34,7 +34,7 @@ class App extends React.Component {
   _saveSession(){
     const session = this.state
     alert("Session Saved")
-    axios.post('http://localhost:3001/save/', session )
+    axios.post('http://localhost:8080/save/', session )
     .then((response) => {
       if (response.data.id) {
         this.setState({ sessionId: response.data.id });
