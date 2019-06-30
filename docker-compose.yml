@@ -27,7 +27,7 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
     ports:
-      - 3001:8080
+      - 3001:3001
     depends_on:
       - postgres
     container_name: clicktracker_server
