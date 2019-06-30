@@ -1,9 +1,6 @@
 {
   "development": {
-    "username": "clicktracker_user",
-    "password": "password",
-    "database": "clicktracker",
-    "host": "postgres",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
     "operatorsAliases": false
   }

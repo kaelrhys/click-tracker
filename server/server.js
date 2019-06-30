@@ -8,7 +8,7 @@ const cors = require('@koa/cors');
 const server = new Koa();
 const router = new Router()
 
-const PORT = 8080;
+const PORT = 3001;
 
 var corsOptions = {
 	origin: '*'

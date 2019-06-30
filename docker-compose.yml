@@ -5,9 +5,9 @@ services:
     ports:
       - 3432:5432
     environment:
-      POSTGRES_USER: clicktracker_user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: clicktracker
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     container_name: clicktracker_postgres
   client:
     build: ./client
@@ -24,8 +24,10 @@ services:
     volumes:
       - ./server:/server
       - /server/node_modules
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
     ports:
-      - 8080:8080
+      - 3001:8080
     depends_on:
       - postgres
     container_name: clicktracker_server

@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import API from './api';
 import './App.css'
 
 
@@ -34,7 +34,7 @@ class App extends React.Component {
   _saveSession(){
     const session = this.state
     alert("Session Saved")
-    axios.post('http://localhost:8080/save/', session )
+    API.post('/save/', session )
     .then((response) => {
       if (response.data.id) {
         this.setState({ sessionId: response.data.id });
