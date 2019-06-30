@@ -7,7 +7,6 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = { 
       session: {
         id: props.match.params.id,
@@ -18,20 +17,20 @@ class App extends React.Component {
     }
   }
 
-
   async componentDidMount(props) {
-
     API.get(`/session/${this.state.session.id}`)
     .then((response) => {
+      const clicks = response.data.clicks || []
+      const totalClicks = clicks.length
       const session = {
         id: response.data.id || this.state.session.id,
-        clicks: response.data.clicks || [],
+        clicks: clicks,
         clicksThisSession: 0,
-        totalClicks: 0
+        totalClicks: totalClicks
       }
+      console.log(response.data)
       this.setState({session: session})
     })
-
   }
 
   _undoClick(){
@@ -45,11 +44,14 @@ class App extends React.Component {
 
   _addClick(e) {
     this.state.session.clicks.push({top: e.nativeEvent.offsetY, left: e.nativeEvent.offsetX });
+    this.state.session.totalClicks = this.state.session.totalClicks + 1
+    this.state.session.clicksThisSession = this.state.session.clicksThisSession + 1
     this.setState(this.state.session);
   }
 
   _saveSession(){
-    API.post('/save/', this.state.session )
+    console.log(this.state.session)
+    API.post('/save/', this.state.session)
     .then((response) => {
       if (response.data.id) {
         alert("Session Saved")
@@ -60,7 +62,6 @@ class App extends React.Component {
       console.log(error)
     });
   }
-
 
   render() {
     const session = this.state.session
@@ -79,7 +80,6 @@ class App extends React.Component {
       </div>
     );
   }
-
 }
 
 export default App;
