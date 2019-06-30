@@ -12,25 +12,33 @@ const PORT = 3001;
 
 var corsOptions = {
 	origin: '*'
-};
+}
 
-router.post('/new/', bodyParser, async ctx => {
-    // const Session = await models.Session.create({})
-    ctx.body = JSON.stringify(ctx.request.body)
+router.get('/', (ctx) => {
+    ctx.body = 'Server Online';
+})
+
+router.get('/new/', async ctx => {
+    const session = await models.Session.create({})
+    ctx.body = session
+})
+
+router.get('/session/:id', async ctx => {
+    const session = await models.Session.findOne({where: { id: ctx.params.id }})
+    ctx.body = session
 })
 
 router.post('/save/', bodyParser, async ctx => {
-        let session;
-        if (ctx.request.body.sessionId) {
-            session = await models.Session.findOne({where: { id: ctx.request.body.sessionId }})
-            session.clicks = ctx.request.body.clicks
-            session.save()
-        } else {
-            session = await models.Session.create({ clicks: ctx.request.body.clicks })
-        }
-        ctx.body = JSON.stringify(session)
+    let session;
+    if (ctx.request.body.id) {
+        session = await models.Session.findOne({where: { id: ctx.request.body.id }})
+        session.clicks = ctx.request.body.clicks
+        session.save()
+    } else {
+        session = await models.Session.create({ clicks: ctx.request.body.clicks })
     }
-)
+    ctx.body = JSON.stringify(session)
+})
 
 server
 .use(cors(corsOptions))
