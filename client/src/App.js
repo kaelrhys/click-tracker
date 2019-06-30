@@ -1,13 +1,15 @@
 import React from 'react'
 import API from './api';
 import './App.css'
+import { TwitterPicker } from 'react-color';
 
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
+      selectedColor: "#000",
       session: {
         id: props.match.params.id,
         clicks: [],
@@ -43,7 +45,7 @@ class App extends React.Component {
   }
 
   _addClick(e) {
-    this.state.session.clicks.push({top: e.nativeEvent.offsetY, left: e.nativeEvent.offsetX });
+    this.state.session.clicks.push({top: e.nativeEvent.offsetY, left: e.nativeEvent.offsetX, color: this.state.selectedColor, });
     this.state.session.totalClicks = this.state.session.totalClicks + 1
     this.state.session.clicksThisSession = this.state.session.clicksThisSession + 1
     this.setState(this.state.session);
@@ -63,19 +65,29 @@ class App extends React.Component {
     });
   }
 
+  _colorChange = (color) => {
+    this.setState({ selectedColor: color.hex });
+  };
+
+
+
   render() {
     const session = this.state.session
     return (
       <div ref="elem" className="container">
         <div className="canvas" onClick={this._addClick.bind(this)} >
           {
-            session.clicks.map((click, index) => <div className="dot" key={index} style={{ top: click.top+'px', left: click.left+'px', }}></div>)
+            session.clicks.map((click, index) => <div className="dot" key={index} style={{ top: click.top+'px', left: click.left+'px', backgroundColor: click.color,  }}></div>)
           }
         </div>
         <button onClick={this._undoClick.bind(this)}>Undo Click</button>
         <button onClick={this._saveSession.bind(this)}>Save Session</button>
         <b>Total Clicks: { session.totalClicks }</b>
         <b>Clicks this Session: { session.clicksThisSession }</b>
+        <TwitterPicker 
+          color={ this.state.selectedColor }
+          onChangeComplete={ this._colorChange }
+        />
 
       </div>
     );
