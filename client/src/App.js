@@ -38,6 +38,8 @@ class App extends React.Component {
   _undoClick(){
     if (this.state.session.clicks.length !== 0) {
       this.state.session.clicks.pop()
+      this.state.session.totalClicks = this.state.session.totalClicks - 1
+      this.state.session.clicksThisSession = this.state.session.clicksThisSession - 1
       this.setState(this.state.session)
     } else {
       alert("No more clicks.")
@@ -70,25 +72,43 @@ class App extends React.Component {
   };
 
 
-
   render() {
     const session = this.state.session
     return (
       <div ref="elem" className="container">
+        <div className="dock">
+          <div className="button-group">
+            <button className="button" onClick={this._undoClick.bind(this)}>Undo Click</button>
+            <button className="button" style={{marginLeft: "5px"}} onClick={this._saveSession.bind(this)}>Save Session</button>
+          </div>
+          
+          <div className="session-info">
+            <div className="color-picker">
+              <span className="color-picker__label">Color:</span>
+              <div className="color-picker__color" style={{ backgroundColor: this.state.selectedColor }} >
+                <div className="color-picker__pallete">
+                  <TwitterPicker
+                    color={ this.state.selectedColor }
+                    onChangeComplete={ this._colorChange }
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="session-info__clicks">
+              <ul>
+                <li>Total Clicks: { session.totalClicks }</li>
+                <li>Clicks this Session: { session.clicksThisSession }</li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+
         <div className="canvas" onClick={this._addClick.bind(this)} >
           {
-            session.clicks.map((click, index) => <div className="dot" key={index} style={{ top: click.top+'px', left: click.left+'px', backgroundColor: click.color,  }}></div>)
+            session.clicks.map((click, index) => <div className="click" key={index} style={{ top: `${(click.top - 3)}px`, left: `${(click.left - 3)}px`, backgroundColor: click.color,  }}></div>)
           }
         </div>
-        <button onClick={this._undoClick.bind(this)}>Undo Click</button>
-        <button onClick={this._saveSession.bind(this)}>Save Session</button>
-        <b>Total Clicks: { session.totalClicks }</b>
-        <b>Clicks this Session: { session.clicksThisSession }</b>
-        <TwitterPicker 
-          color={ this.state.selectedColor }
-          onChangeComplete={ this._colorChange }
-        />
-
       </div>
     );
   }

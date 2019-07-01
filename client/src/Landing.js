@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from "react-router-dom";
 import API from './api';
-
+import './App.css'
 
 class Landing extends React.Component {
 
@@ -31,9 +31,11 @@ class Landing extends React.Component {
             return <Redirect to={`/session/${this.state.sessionId}` } />
         }
         return (
-            <div>
-                <h1>Landing</h1>
-                <button onClick={this._setRedirect}>Start</button>
+            <div className="landing">
+                <div className="landing-box">
+                    <h1>Welcome to Click Tracker</h1>
+                    <button className="button" onClick={this._setRedirect}>Start a new session</button>
+                </div>
             </div>
         )
     }
